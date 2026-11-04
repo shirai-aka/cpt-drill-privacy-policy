@@ -1,57 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CPT合格ドリル for NASM-CPT サポート</title>
-<style>
-  body { margin: 0; padding: 24px 20px 64px; font-family: -apple-system, "Hiragino Sans", sans-serif; color: #1c2422; background: #fff; line-height: 1.8; }
-  main { max-width: 680px; margin: 0 auto; }
-  h1 { font-size: 1.5rem; border-bottom: 2px solid #1F3A8A; padding-bottom: 8px; }
-  h2 { font-size: 1.1rem; margin-top: 2em; color: #1F3A8A; }
-  a { color: #1F3A8A; }
-  .note { background: #f2f4f3; border-radius: 8px; padding: 12px 16px; font-size: 0.9rem; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>CPT合格ドリル for NASM-CPT サポート</title>
+  <meta name="description" content="配信を終了した CPT合格ドリル for NASM-CPT のサポートページと、統合版への移行案内。">
+  <link rel="alternate" hreflang="en" href="./support-nasm.en.html">
+  <link rel="alternate" hreflang="ja" href="./">
+  <style>
+    :root {
+      --bg: #f8f3ea; --card: #fffdf8; --ink: #3d3028; --sub: #7a6a5c; --line: #e6dccd;
+      --accent: #b86a24; --accent-soft: #f6e7d6; --focus: #2b6cb0;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #17151a; --card: #221f25; --ink: #f1ebe2; --sub: #b4a99c; --line: #3a3540;
+        --accent: #e9a25c; --accent-soft: #342a21; --focus: #8ab4f8; }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Segoe UI", Roboto, sans-serif;
+      font-size: 16px; line-height: 1.8; overflow-wrap: anywhere;
+    }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible, label:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+    .wrap { width: min(760px, 100%); margin: 0 auto; padding: 0 16px; }
+    .site-header { border-bottom: 1px solid var(--line); background: var(--card); }
+    .site-nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; min-height: 52px; padding: 8px 0; font-size: 14px; }
+    .site-nav a { text-decoration: none; font-weight: 600; }
+    .site-nav .home::before { content: "\2190\00a0"; }
+    .site-nav .lang { margin-left: auto; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; }
+    .site-nav .lang:hover { background: var(--accent-soft); }
+    main { padding: 36px 0 56px; }
+    .page-header { margin-bottom: 28px; }
+    .eyebrow { margin: 0 0 4px; font-size: 15px; font-weight: 700; color: var(--accent); }
+    .eyebrow a { text-decoration: none; }
+    h1 { margin: 0; font-size: clamp(24px, 5.5vw, 32px); line-height: 1.3; }
+    .meta { margin: 10px 0 0; color: var(--sub); font-size: 14px; }
+    .lead { font-size: 17px; }
+    h2 { font-size: 20px; line-height: 1.4; margin: 44px 0 12px; padding-top: 20px; border-top: 1px solid var(--line); }
+    h3 { font-size: 17px; line-height: 1.5; margin: 28px 0 6px; }
+    p, ul, ol { margin: 0 0 1em; }
+    ul, ol { padding-left: 1.4em; }
+    li { margin: .3em 0; }
+    li > ul, li > ol { margin: .3em 0 .3em; }
+    strong { font-weight: 700; }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 0 0 1em; font-size: 15px; }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: var(--accent-soft); font-weight: 700; }
+    .box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; margin: 0 0 1.4em; }
+    .box > :first-child { margin-top: 0; }
+    .box > :last-child { margin-bottom: 0; }
+    .box ul, .box ol { margin-bottom: 0; }
+    .notice { border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 12px 16px; margin: 0 0 28px; font-size: 14px; color: var(--ink); }
+    .notice p { margin: 0; }
+    .card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin: 0 0 14px; }
+    .card h2 { margin: 0 0 6px; padding: 0; border: 0; font-size: 19px; }
+    .card p { margin: 0 0 8px; color: var(--sub); }
+    .card p:last-child { margin: 0; }
+    .card a.more { font-weight: 700; text-decoration: none; }
+    .card a.more::after { content: "\00a0\2192"; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin: 0 0 1.4em; }
+    .gallery figure { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
+    .gallery img { width: 100%; height: auto; border-radius: 8px; display: block; }
+    .gallery figcaption { font-size: 12px; color: var(--sub); text-align: center; margin-top: 6px; }
+    .site-footer { border-top: 1px solid var(--line); padding: 20px 0 48px; color: var(--sub); font-size: 14px; }
+    .site-footer nav { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 10px; }
+    .site-footer nav a { text-decoration: none; font-weight: 600; }
+    .site-footer p { margin: 0; }
+    @media (max-width: 480px) {
+      body { font-size: 15.5px; }
+      main { padding-top: 28px; }
+      h2 { margin-top: 36px; }
+      table { display: block; overflow-x: auto; }
+    }
+    @media print {
+      .site-header, .site-footer nav { display: none; }
+      body { background: #fff; color: #000; }
+      a { color: inherit; }
+    }
+  </style>
 </head>
 <body>
-<main>
-<h1>CPT合格ドリル for NASM-CPT サポート</h1>
-<div style="border:2px solid #00695C;border-radius:12px;padding:14px 16px;margin:16px 0;background:#E6F2F0">
-<p style="margin:0 0 8px"><strong>【お知らせ】NASM-CPTの問題集は「CPT合格ドリル NSCA・NASM対策」に統合しました（2026年10月）</strong></p>
-<p style="margin:0 0 8px">「CPT合格ドリル for NASM-CPT」は配信を終了しました。NASM-CPTの全640問・模擬試験は、統合版アプリでそのままご利用いただけます（ホーム画面上部の「NASM-CPT 対策」を選択）。</p>
-<p style="margin:0 0 8px">App Store：<a href="https://apps.apple.com/jp/app/id6805512169">CPT合格ドリル NSCA・NASM対策</a>／サポート：<a href="support.html">統合版サポートページ</a></p>
-<p style="margin:0;font-size:0.9em">※端末内の学習記録はアプリをまたいで引き継げません。お手数ですが統合版で学習を続けてください。既にインストール済みの旧アプリは、引き続きお使いいただけます。</p>
-</div>
+  <header class="site-header">
+    <nav class="site-nav wrap" aria-label="サイト">
+      <a class="home" href="https://shirai-aka.github.io/">アプリ一覧</a>
+      <a class="lang" href="./support-nasm.en.html" lang="en" hreflang="en">English</a>
+    </nav>
+  </header>
+  <main class="wrap" id="main">
+    <article>
+      <header class="page-header">
+        <p class="eyebrow">CPT合格ドリル for NASM-CPT</p>
+        <h1>サポート</h1>
+      <p class="meta">最終更新日: 2026年10月10日</p>
+      </header>
+<div class="box">
+      <p><strong>【お知らせ】NASM-CPTの問題集は「CPT合格ドリル NSCA・NASM対策」に統合しました（2026年10月）</strong></p>
+      <p>「CPT合格ドリル for NASM-CPT」は配信を終了しました。NASM-CPTの全640問・模擬試験は、統合版アプリでそのままご利用いただけます（ホーム画面上部の「NASM-CPT 対策」を選択）。</p>
+      <p>App Store：<a href="https://apps.apple.com/jp/app/id6805512169">CPT合格ドリル NSCA・NASM対策</a>／サポート：<a href="support.html">統合版サポートページ</a></p>
+      <p>※端末内の学習記録はアプリをまたいで引き継げません。お手数ですが統合版で学習を続けてください。既にインストール済みの旧アプリは、引き続きお使いいただけます。</p>
+    </div>
 
-<p>「CPT合格ドリル for NASM-CPT」（iOSアプリ）のサポートページです。</p>
+    <p>「CPT合格ドリル for NASM-CPT」（iOSアプリ）のサポートページです。</p>
 
-<h2>よくある質問</h2>
-<p><strong>Q. 問題は何問ありますか？</strong><br>
-8分野・合計640問をすべて無料で利用できます。問題はすべてオリジナルに作成したものです。</p>
+    <h2>よくある質問</h2>
+    <h3>Q. 問題は何問ありますか？</h3>
+    <p>8分野・合計640問をすべて無料で利用できます。問題はすべてオリジナルに作成したものです。</p>
 
-<p><strong>Q. 「集中ゲージ」とは何ですか？</strong><br>
-ドリル1セッション（10問）の開始ごとに1つ消費するゲージです（最大5）。30分ごとに1つ自動回復するほか、動画広告の視聴ですぐに全回復できます。間違えた問題の復習セッションはゲージを消費しません。</p>
+    <h3>Q. 「集中ゲージ」とは何ですか？</h3>
+    <p>ドリル1セッション（10問）の開始ごとに1つ消費するゲージです（最大5）。30分ごとに1つ自動回復するほか、動画広告の視聴ですぐに全回復できます。間違えた問題の復習セッションはゲージを消費しません。</p>
 
-<p><strong>Q. 模擬試験とは何ですか？</strong><br>
-全分野から本番の出題比率に近い配分で出題する、時間制限つきの試験形式です。ミニ模試（30問・36分）と本番形式（100問・120分。日本語版の本試験に合わせています）を選べます。解答中は正誤が表示されず、終了後に分野別の正答率と各問題の解説を確認できます。開始前に確認のうえ動画広告が流れます（広告を読み込めない場合はそのまま開始します）。模擬試験は集中ゲージを消費しません。結果画面の合格ラインは学習上の目安で、実際の試験の合否を保証するものではありません。</p>
+    <h3>Q. 模擬試験とは何ですか？</h3>
+    <p>全分野から本番の出題比率に近い配分で出題する、時間制限つきの試験形式です。ミニ模試（30問・36分）と本番形式（100問・120分。日本語版の本試験に合わせています）を選べます。解答中は正誤が表示されず、終了後に分野別の正答率と各問題の解説を確認できます。開始前に確認のうえ動画広告が流れます（広告を読み込めない場合はそのまま開始します）。模擬試験は集中ゲージを消費しません。結果画面の合格ラインは学習上の目安で、実際の試験の合否を保証するものではありません。</p>
 
-<p><strong>Q. 広告について</strong><br>
-本アプリは広告収入で運営される無料アプリです。画面下部のバナーのほか、学習セッションの区切りに全画面広告が、模擬試験の開始前に動画広告が表示されます。トラッキングを「許可しない」にした場合も、パーソナライズされない広告が表示されます。</p>
+    <h3>Q. 広告について</h3>
+    <p>本アプリは広告収入で運営される無料アプリです。画面下部のバナーのほか、学習セッションの区切りに全画面広告が、模擬試験の開始前に動画広告が表示されます。トラッキングを「許可しない」にした場合も、パーソナライズされない広告が表示されます。</p>
 
-<p><strong>Q. 学習データはどこに保存されますか？</strong><br>
-すべてお使いの端末内にのみ保存されます。外部サーバーへの送信はありません。アプリを削除するとデータも削除されます。機種変更時のデータ引き継ぎには対応していません。</p>
+    <h3>Q. 学習データはどこに保存されますか？</h3>
+    <p>すべてお使いの端末内にのみ保存されます。外部サーバーへの送信はありません。アプリを削除するとデータも削除されます。機種変更時のデータ引き継ぎには対応していません。</p>
 
-<p><strong>Q. オフラインで使えますか？</strong><br>
-問題・解説・成績記録はオフラインで利用できます（広告の表示を除く）。</p>
+    <h3>Q. オフラインで使えますか？</h3>
+    <p>問題・解説・成績記録はオフラインで利用できます（広告の表示を除く）。</p>
 
-<h2>お問い合わせ</h2>
-<p>不具合のご報告・ご要望は下記メールアドレスへお願いします。<br>
-メール：<a href="mailto:shirai.apps@ymail.ne.jp?subject=CPT合格ドリルN">shirai.apps@ymail.ne.jp</a></p>
+    <h2>お問い合わせ</h2>
+    <p>不具合のご報告・ご要望は下記メールアドレスへお願いします。<br>メール：<a href="mailto:shirai.apps@ymail.ne.jp?subject=CPT合格ドリルN">shirai.apps@ymail.ne.jp</a></p>
 
-<h2>プライバシーポリシー</h2>
-<p><a href="./">プライバシーポリシーはこちら</a></p>
+    <h2>プライバシーポリシー</h2>
+    <p><a href="./">プライバシーポリシーはこちら</a></p>
 
-<p class="note">本アプリは NASM（National Academy of Sports Medicine）とは無関係の、独立した第三者による学習支援アプリです。公式・公認・提携アプリではありません。</p>
-</main>
+    <p class="box">本アプリは NASM（National Academy of Sports Medicine）とは無関係の、独立した第三者による学習支援アプリです。公式・公認・提携アプリではありません。</p>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <nav aria-label="ページ"><a href="./">プライバシーポリシー</a><a href="./support.html">サポート</a><a href="./support-nasm.html">NASM-CPT版サポート（配信終了）</a></nav>
+      <p>お問い合わせ: <a href="mailto:shirai.apps@ymail.ne.jp">shirai.apps@ymail.ne.jp</a> · © Raimu Okano</p>
+    </div>
+  </footer>
 </body>
 </html>
